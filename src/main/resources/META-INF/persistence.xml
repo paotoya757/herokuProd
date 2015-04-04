@@ -5,6 +5,7 @@
     <class>ServerSide.Models.Entities.Paciente</class>
     <class>ServerSide.Models.Entities.EpisodioDolor</class>
     <class>ServerSide.Models.Entities.Doctor</class>
+	<!-- -->
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-163-225-41.compute-1.amazonaws.com:5432/db18pup0aveuth?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
       <property name="javax.persistence.jdbc.password" value="9WULWDQD2RyPzjrw2rdhu7UQe0"/>
