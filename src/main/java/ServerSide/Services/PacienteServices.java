@@ -120,8 +120,9 @@ public class PacienteServices {
      * @param cedula el numero de cedula del paciente
      * @return la informacion de paciente con el numero de cedula dado
      */
-    @Path("/{cedula}")
-    public Response findById( @PathParam("cedula") Long cedula ){
+    @Path("/{id}")
+    @GET
+    public Response findById( @PathParam("id") Long cedula ){
         Paciente paciente = entityManager.find(Paciente.class, cedula);
         return Response.status(200).header("Access-Control-Allow-Origin", "*").entity( PacienteConverter.entityToDto(paciente) ).build();
     }
