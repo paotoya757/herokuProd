@@ -13,6 +13,7 @@ import ServerSide.Models.DTOs.PacienteDTO;
 import ServerSide.Models.Entities.Doctor;
 import ServerSide.Models.Entities.EpisodioDolor;
 import ServerSide.Models.Entities.Paciente;
+import ServerSide.Utils.Utils;
 import com.google.gson.Gson;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.BasisLibrary;
 import java.util.List;
@@ -119,7 +120,7 @@ public class PacienteServices {
      * @param cedula el numero de cedula del paciente
      * @return la informacion de paciente con el numero de cedula dado
      */
-    @Path("/{id}")
+    @Path("/{cedula}")
     public Response findById( @PathParam("cedula") Long cedula ){
         Paciente paciente = entityManager.find(Paciente.class, cedula);
         return Response.status(200).header("Access-Control-Allow-Origin", "*").entity( PacienteConverter.entityToDto(paciente) ).build();
