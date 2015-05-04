@@ -1,0 +1,235 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ServerSide.Services;
+
+import ServerSide.Converters.PacienteConverter;
+import ServerSide.Init.PersistenceManager;
+import ServerSide.Init.Stormpath;
+import ServerSide.Models.DTOs.DoctorDTO;
+import ServerSide.Models.DTOs.PacienteDTO;
+import ServerSide.Models.Entities.Doctor;
+import ServerSide.Models.Entities.Paciente;
+import co.edu.uniandes.csw.miso4204.security.jwt.api.JsonWebToken;
+import co.edu.uniandes.csw.miso4204.security.jwt.api.JwtHashAlgorithm;
+import co.edu.uniandes.csw.miso4204.security.logic.dto.UserDTO;
+import com.google.gson.Gson;
+import com.stormpath.sdk.account.Account;
+import com.stormpath.sdk.api.ApiKey;
+import com.stormpath.sdk.api.ApiKeys;
+import com.stormpath.sdk.application.ApplicationList;
+import com.stormpath.sdk.application.Applications;
+import com.stormpath.sdk.authc.AuthenticationRequest;
+import com.stormpath.sdk.authc.AuthenticationResult;
+import com.stormpath.sdk.authc.UsernamePasswordRequest;
+import com.stormpath.sdk.client.Client;
+import com.stormpath.sdk.client.Clients;
+import com.stormpath.sdk.resource.ResourceException;
+import com.stormpath.sdk.tenant.Tenant;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
+/**
+ *
+ * @author estudiante
+ */
+@Path("/auth")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class UserService {
+
+    //--------------------------------------------------------------------------
+    // Atributos
+    //--------------------------------------------------------------------------
+    /**
+     * Atributo del entity manager Unidad de persistencia, "myPU"
+     */
+    @PersistenceContext(unitName = "myPU")
+    EntityManager entityManager;
+
+    //--------------------------------------------------------------------------
+    // INIT
+    //--------------------------------------------------------------------------
+    /**
+     * Inicializa el entity manager
+     */
+    @PostConstruct
+    public void init() {
+        try {
+            entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("No se incializo correctamente!!!");
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Metodos
+    //--------------------------------------------------------------------------
+    @Path("/login")
+    @POST
+    public Response login(UserDTO user) {
+
+        int status = 500; //Codigo de error en el servidor
+        String token = "User and/or password wrong";
+        UserDTO userStorm = new UserDTO();
+        String path = "src\\main\\webapp\\WEB-INF\\apiKey.properties";//Colocar la Ubicacion de su archivo apiKey.properties
+        ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+        Client client = Clients.builder().setApiKey(apiKey).build();
+
+        try {
+            AuthenticationRequest request = new UsernamePasswordRequest(user.getUsername(), user.getPassword());
+            Tenant tenant = client.getCurrentTenant();
+            ApplicationList applications = tenant.getApplications(Applications.where(Applications.name().eqIgnoreCase("MigraineTracking")));
+            com.stormpath.sdk.application.Application application = applications.iterator().next();
+
+            AuthenticationResult result = application.authenticateAccount(request);
+            Account account = result.getAccount();
+            userStorm.setEmail(account.getEmail());
+            userStorm.setName(account.getFullName());
+            userStorm.setUsername(account.getUsername());
+            userStorm.setPassword(user.getPassword());
+            userStorm.setLevelAccess(user.getLevelAccess());
+            token = new Gson().toJson(JsonWebToken.encode(userStorm, "Un14nd3s2014@", JwtHashAlgorithm.HS256));
+            status = 200;
+
+        } catch (ResourceException ex) {
+            System.out.println(ex.getStatus() + " " + ex.getMessage());
+        }
+
+        return Response.status(status).entity(token).build();
+    }
+
+    /**
+     * Registra un paciente en el sistema y en STORMPATH 
+     * @param 
+     * @return
+     * @throws JSONException 
+     */
+    @Path("/new/paciente")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registrarPaciente(PacienteDTO paciente) throws JSONException {
+        
+        Paciente p = PacienteConverter.dtoToEntity(paciente);
+        
+//        JSONObject respuesta = new JSONObject();
+        String respuesta;
+        //#Jetty
+        EntityTransaction tran = entityManager.getTransaction();
+        //#Glassfish
+        //UserTransaction tran = Utils.loadUtx();
+        try {
+            tran.begin();
+            //#Glassfish
+            //entityManager.joinTransaction();
+
+            entityManager.persist(p);
+            Doctor doc = this.entityManager.find(Doctor.class, paciente.getDoctorid());
+            doc.getPacientes().add(p);
+
+            Client client = Stormpath.createStormPathClient();
+            Account account = client.instantiate(Account.class);
+
+            account.setEmail(paciente.getUsername());
+            account.setGivenName(paciente.getName());
+            account.setPassword(paciente.getPassword());
+            account.setUsername(paciente.getUsername());
+            account.setSurname(paciente.getName());
+            if (!paciente.getUsername().contains("@")) {
+                throw new Exception("El username no es un correo electronico valido");
+            }
+            Stormpath.getStormPathApp().createAccount(account);
+            
+            tran.commit();
+            
+            entityManager.refresh(p);
+            respuesta = "New_paciente_id = "+ p.getCedula();
+        } catch (Exception t) {
+            t.printStackTrace();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            p = null;
+            respuesta="Exception message: "+ t.getMessage();
+            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
+        } finally {
+            entityManager.clear();
+            entityManager.close();
+        }
+
+        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
+    }
+    
+    /**
+     * Registra un paciente en el sistema y en STORMPATH 
+     * @param 
+     * @return
+     * @throws JSONException 
+     */
+    @Path("/new/doctor")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registrarDoctor(DoctorDTO doctor) throws JSONException {
+        JSONObject respuesta = new JSONObject();
+        Doctor doctorEntity = new Doctor();
+
+        //#Jetty
+        EntityTransaction tran = entityManager.getTransaction();
+        //#Glassfish
+        //UserTransaction tran = Utils.loadUtx();
+
+        doctorEntity.setName(doctor.getName());
+        doctorEntity.setUsername(doctor.getUsername());
+        try {
+            tran.begin();
+            //#Glassfish
+            //entityManager.joinTransaction();
+            entityManager.persist( doctorEntity );
+
+            Client client = Stormpath.createStormPathClient();
+            Account account = client.instantiate(Account.class);
+           
+            account.setEmail(doctor.getUsername());
+            account.setGivenName(doctor.getName());
+            account.setPassword(doctor.getPassword());
+            account.setUsername(doctor.getUsername());
+            account.setSurname(doctor.getName());
+             if (!doctor.getUsername().contains("@")) {
+                throw new Exception("El username no es un correo electronico valido");
+            }
+            Stormpath.getStormPathApp().createAccount(account);
+            
+            tran.commit();
+            
+            entityManager.refresh(doctorEntity);
+            respuesta.put("doctor_id", doctorEntity.getId());
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            doctorEntity = null;
+            respuesta.put("Exception message", t.getMessage());
+            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
+        } finally {
+            entityManager.clear();
+            entityManager.close();
+        }
+        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
+    }
+    
+}

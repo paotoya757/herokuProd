@@ -2,7 +2,7 @@ package ServerSide.Utils;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.transaction.UserTransaction;
+//import javax.transaction.UserTransaction;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,13 +18,13 @@ import javax.transaction.UserTransaction;
  */
 public class Utils {
     
-        public static UserTransaction loadUtx() throws NamingException {
-        
-            InitialContext ctx = new InitialContext();
-            UserTransaction tx = (UserTransaction) ctx.lookup("java:comp/UserTransaction");
-        
-        return tx;
-    }
+//        public static UserTransaction loadUtx() throws NamingException {
+//        
+//            InitialContext ctx = new InitialContext();
+//            UserTransaction tx = (UserTransaction) ctx.lookup("java:comp/UserTransaction");
+//        
+//        return tx;
+//    }
     /**
      * Metodo para imprimir un mensaje en consola en rosado
      * @param s el mensaje a imprimir

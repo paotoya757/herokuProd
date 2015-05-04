@@ -6,19 +6,29 @@
          version="2.5">
 
     <!-- Filtros -->
-    <servlet>
-        <servlet-name>jersey-serlvet</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>javax.ws.rs.Application</param-name>
-            <param-value>ServerSide.Init.WebApp</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
+ 
+  <servlet>
+      <servlet-name>jersey-services</servlet-name>
+      <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+      <init-param>
+          <param-name>com.sun.jersey.config.property.packages</param-name>
+          <param-value>ServerSide.Services</param-value>
+      </init-param>
+      <init-param>
+          <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+          <param-value>true</param-value>
+      </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>jersey-services</servlet-name>
+    <url-pattern>/webresources/*</url-pattern>
+  </servlet-mapping>
+    
+  <!--  <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
         <url-pattern>/webresources/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
