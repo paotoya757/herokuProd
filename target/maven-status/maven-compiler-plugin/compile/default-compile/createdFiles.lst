@@ -2,6 +2,7 @@ ServerSide\Converters\EpisodioDolorConverter$3.class
 ServerSide\Converters\EpisodioDolorConverter.class
 ServerSide\Models\DTOs\MedicamentoDTO.class
 ServerSide\Services\DoctorServices.class
+ServerSide\Init\WebApp.class
 ServerSide\Models\DTOs\CatalizadorDTO.class
 ServerSide\Services\PoblarBD.class
 ServerSide\Utils\Utils.class
@@ -15,7 +16,7 @@ ServerSide\Converters\EpisodioDolorConverter$1.class
 ServerSide\Models\DTOs\SintomaDTO.class
 ServerSide\Services\PacienteServices.class
 ServerSide\Models\Entities\Paciente.class
-ServerSide\Services\UserService.class
+ServerSide\User\UserService.class
 ServerSide\Init\ApiKeyEnvVariables.class
 ServerSide\Models\DTOs\PacienteDTO.class
 ServerSide\Converters\DoctorConverter.class
