@@ -132,11 +132,6 @@
         </dependency>
         
         <!--Security module-->
-        <dependency>
-            <groupId>PMC</groupId>
-            <artifactId>security</artifactId>
-            <version>1.0</version>
-        </dependency>
         
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -155,8 +150,9 @@
         <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
-            <version>2.0</version>
+            <version>2.1-SNAPSHOT</version>
         </dependency>
+        
     </dependencies>
     <repositories>
         <!--other repositories if any-->
