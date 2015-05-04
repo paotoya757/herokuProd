@@ -8,6 +8,7 @@ import com.stormpath.sdk.application.Applications;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.client.Clients;
 import com.stormpath.sdk.tenant.Tenant;
+import java.util.Properties;
 
 /**
  *
@@ -21,7 +22,8 @@ public class Stormpath {
     public static Client createStormPathClient() {
         if (clnt == null) {
             String path = "src\\main\\webapp\\WEB-INF\\apiKey.properties";
-            ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+            Properties props = new ApiKeyEnvVariables();
+            ApiKey apiKey = ApiKeys.builder().setProperties(props).build();
             clnt = Clients.builder().setApiKey(apiKey).build();
         }
         return clnt;

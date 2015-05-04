@@ -6,6 +6,7 @@
 package ServerSide.Services;
 
 import ServerSide.Converters.PacienteConverter;
+import ServerSide.Init.ApiKeyEnvVariables;
 import ServerSide.Init.PersistenceManager;
 import ServerSide.Init.Stormpath;
 import ServerSide.Models.DTOs.DoctorDTO;
@@ -28,6 +29,7 @@ import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.client.Clients;
 import com.stormpath.sdk.resource.ResourceException;
 import com.stormpath.sdk.tenant.Tenant;
+import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -86,7 +88,8 @@ public class UserService {
         String token = "User and/or password wrong";
         UserDTO userStorm = new UserDTO();
         String path = "src\\main\\webapp\\WEB-INF\\apiKey.properties";//Colocar la Ubicacion de su archivo apiKey.properties
-        ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+        Properties props = new ApiKeyEnvVariables();
+        ApiKey apiKey = ApiKeys.builder().setProperties(props).build();
         Client client = Clients.builder().setApiKey(apiKey).build();
 
         try {
@@ -113,7 +116,7 @@ public class UserService {
     }
 
     /**
-     * Registra un paciente en el sistema y en STORMPATH 
+     * Registra un nuevo paciente en el sistema y en STORMPATH 
      * @param 
      * @return
      * @throws JSONException 
@@ -174,7 +177,7 @@ public class UserService {
     }
     
     /**
-     * Registra un paciente en el sistema y en STORMPATH 
+     * Registra un nuevo doctor en el sistema y en STORMPATH 
      * @param 
      * @return
      * @throws JSONException 
