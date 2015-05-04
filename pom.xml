@@ -10,7 +10,7 @@
     </properties>
     <dependencies>
 
-<!-- Jetty -->
+<!-- Jetty Libreria-->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
@@ -24,14 +24,14 @@
 
         <!-- Jersey -->
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.8</version>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.13</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>1.8</version>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.13</version>
         </dependency>
 
         <!-- Shiro -->
@@ -108,7 +108,7 @@
             <version>9.1-901-1.jdbc4</version>
         </dependency>
         
-        <!--JSON mappers
+        <!--JSON mappers-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
@@ -121,7 +121,7 @@
             <version>1.1</version>
             <type>jar</type>
         </dependency>
-        -->
+        
         
         <!--Test data generator-->
         <dependency>
@@ -137,14 +137,14 @@
             <artifactId>security</artifactId>
             <version>1.0</version>
         </dependency>
-        <!--
+        
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.4.0</version>
             <type>jar</type>
         </dependency>
-        -->
+       
 <!--        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
