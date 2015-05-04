@@ -16,6 +16,7 @@ ServerSide\Models\DTOs\SintomaDTO.class
 ServerSide\Services\PacienteServices.class
 ServerSide\Models\Entities\Paciente.class
 ServerSide\Services\UserService.class
+ServerSide\Init\ApiKeyEnvVariables.class
 ServerSide\Models\DTOs\PacienteDTO.class
 ServerSide\Converters\DoctorConverter.class
 ServerSide\Init\Stormpath.class

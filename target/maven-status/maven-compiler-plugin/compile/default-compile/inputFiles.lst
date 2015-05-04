@@ -16,6 +16,7 @@ C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\Serve
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Services\PacienteServices.java
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Services\EpisodioServices.java
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Services\UserService.java
+C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Init\ApiKeyEnvVariables.java
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Init\Stormpath.java
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Models\DTOs\CatalizadorDTO.java
 C:\Users\Personal\_Deployed Apps\migrainetracking.ServerSide\src\main\java\ServerSide\Models\Entities\EpisodioDolor.java
