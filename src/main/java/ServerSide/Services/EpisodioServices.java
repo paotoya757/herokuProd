@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -96,18 +97,25 @@ public class EpisodioServices {
        episodioEntity.setSintomas(toJson(episodio.getSintomas())); 
        
        
+      //#Jetty
+       EntityTransaction tran = entityManager.getTransaction();
+       
+       //#Glassfish
+       //UserTransaction tran = Utils.loadUtx();
        try{
-           entityManager.getTransaction().begin();
+           tran.begin();
+           //#Glassfish
+           //entityManager.joinTransaction();
            
            entityManager.persist(episodioEntity);
            Paciente p = entityManager.find( Paciente.class, episodio.getCedulaPaciente() );
            p.getEpisodios().add(episodioEntity);
            episodioEntity.setPaciente(p);
            
-           entityManager.getTransaction().commit();
+           tran.commit();
            entityManager.refresh(episodioEntity);
-           Utils.printf("(!) BD peristence >> Entity : Episodio [id="+episodioEntity.getId()+"]" , "green");
-         
+           
+           // Analisis
            respuesta.put("Mensaje", this.analizarEpisodio(episodio) );
        }
        catch(Throwable t){

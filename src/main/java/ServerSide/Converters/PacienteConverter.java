@@ -22,7 +22,7 @@ public class PacienteConverter {
        Paciente entity = new Paciente();
        entity.setCedula( dto.getCedula() );
        entity.setName( dto.getName() );
-       entity.setPassword( dto.getPassword() );
+       //entity.setPassword( dto.getPassword() );
        entity.setUsername( dto.getUsername() );
        entity.setBirthdate( dto.getBirthdate() );
        

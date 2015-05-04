@@ -22,7 +22,7 @@ public class DoctorConverter {
         
        Doctor entity = new Doctor();
        entity.setName( dto.getName() );
-       entity.setPassword( dto.getPassword() );
+       //entity.setPassword( dto.getPassword() );
        entity.setUsername( dto.getUsername() );
        
        return entity ;
