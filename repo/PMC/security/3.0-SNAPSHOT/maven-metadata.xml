@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>PMC</groupId>
+  <artifactId>security</artifactId>
+  <version>3.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20150504.103304</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20150504103304</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>3.0-20150504.103304-1</value>
+        <updated>20150504103304</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>3.0-20150504.103304-1</value>
+        <updated>20150504103304</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

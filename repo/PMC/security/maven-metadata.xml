@@ -3,10 +3,9 @@
   <groupId>PMC</groupId>
   <artifactId>security</artifactId>
   <versioning>
-    <release>2.0</release>
     <versions>
-      <version>2.0</version>
+      <version>3.0-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20150504102120</lastUpdated>
+    <lastUpdated>20150504103304</lastUpdated>
   </versioning>
 </metadata>
