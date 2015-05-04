@@ -6,14 +6,14 @@
 
 package ServerSide.Models.DTOs;
 
-//import com.fasterxml.jackson.annotation.JsonAutoDetect;
-//import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 /**
  *
  * @author Personal
  */
-//@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class SintomaDTO {
     
     public static final String[] ESPECIFICACIONES_RECOMENDADAS = {
