@@ -15,7 +15,11 @@ package ServerSide.Init;
    public class ApiKeyEnvVariables extends Properties {
 
        public ApiKeyEnvVariables() {
+           //#For Heroku
            super.put("apiKey.id", System.getenv("STORMPATH_API_KEY_ID"));
            super.put("apiKey.secret", System.getenv("STORMPATH_API_KEY_SECRET"));
+           //#For local
+//           super.put("apiKey.id", "72GYW2GXXORJNL2E35V26AFWD");
+//           super.put("apiKey.secret", "WkOXOjXoi0MsOKV9A0KK+AvUrP1gSh2FjapHMWcz0c4");
        }
    }

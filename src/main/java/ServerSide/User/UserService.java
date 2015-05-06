@@ -13,6 +13,7 @@ import ServerSide.Models.DTOs.DoctorDTO;
 import ServerSide.Models.DTOs.PacienteDTO;
 import ServerSide.Models.Entities.Doctor;
 import ServerSide.Models.Entities.Paciente;
+import ServerSide.Utils.DataSecurity;
 import co.edu.uniandes.csw.miso4204.security.jwt.api.JsonWebToken;
 import co.edu.uniandes.csw.miso4204.security.jwt.api.JwtHashAlgorithm;
 import co.edu.uniandes.csw.miso4204.security.logic.dto.UserDTO;
@@ -35,11 +36,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -116,26 +119,34 @@ public class UserService {
     }
 
     /**
-     * Registra un nuevo paciente en el sistema y en STORMPATH 
-     * @param 
+     * Registra un nuevo paciente en el sistema y en STORMPATH
+     *
+     * @param
      * @return
-     * @throws JSONException 
+     * @throws JSONException
      */
     @Path("/new/paciente")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registrarPaciente(PacienteDTO paciente) throws JSONException {
-        
+    public Response registrarPaciente(PacienteDTO paciente,@HeaderParam("data_hash") String data_hash) throws JSONException {
+
         Paciente p = PacienteConverter.dtoToEntity(paciente);
-        
-//        JSONObject respuesta = new JSONObject();
-        String respuesta;
+
+        JSONObject respuesta = new JSONObject();
+
         //#Jetty
         EntityTransaction tran = entityManager.getTransaction();
         //#Glassfish
         //UserTransaction tran = Utils.loadUtx();
         try {
-            tran.begin();
+            
+            //Integrity check
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString( paciente );
+            if (DataSecurity.verificarIntegridad(json, data_hash) == false) {
+                respuesta.put("DATOS COMPROMETIDOS","Los datos que envio no llegaron correctos al servidor.");
+            }
+            
             //#Glassfish
             //entityManager.joinTransaction();
 
@@ -145,6 +156,7 @@ public class UserService {
 
             Client client = Stormpath.createStormPathClient();
             Account account = client.instantiate(Account.class);
+            tran.begin();
 
             account.setEmail(paciente.getUsername());
             account.setGivenName(paciente.getName());
@@ -155,18 +167,18 @@ public class UserService {
                 throw new Exception("El username no es un correo electronico valido");
             }
             Stormpath.getStormPathApp().createAccount(account);
-            
+
             tran.commit();
-            
+
             entityManager.refresh(p);
-            respuesta = "New_paciente_id = "+ p.getCedula();
+             respuesta.put("New_paciente_id", p.getCedula());
         } catch (Exception t) {
             t.printStackTrace();
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
             p = null;
-            respuesta="Exception message: "+ t.getMessage();
+            respuesta.put("Exception Message", t.getMessage());
             return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
         } finally {
             entityManager.clear();
@@ -175,17 +187,19 @@ public class UserService {
 
         return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
     }
-    
+
     /**
-     * Registra un nuevo doctor en el sistema y en STORMPATH 
-     * @param 
+     * Registra un nuevo doctor en el sistema y en STORMPATH
+     *
+     * @param
      * @return
-     * @throws JSONException 
+     * @throws JSONException
      */
     @Path("/new/doctor")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registrarDoctor(DoctorDTO doctor) throws JSONException {
+    public Response registrarDoctor(DoctorDTO doctor, @HeaderParam("data_hash") String data_hash) throws JSONException {
+
         JSONObject respuesta = new JSONObject();
         Doctor doctorEntity = new Doctor();
 
@@ -196,27 +210,37 @@ public class UserService {
 
         doctorEntity.setName(doctor.getName());
         doctorEntity.setUsername(doctor.getUsername());
+        doctorEntity.setPassword(DataSecurity.hashCryptoCode(doctor.getPassword()));
         try {
+            
+            //Integrity check
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString( doctor );
+            if (DataSecurity.verificarIntegridad(json, data_hash) == false) {
+                respuesta.put("DATOS COMPROMETIDOS","Los datos que envio no llegaron correctos al servidor.");
+            }
+            
             tran.begin();
+
             //#Glassfish
             //entityManager.joinTransaction();
-            entityManager.persist( doctorEntity );
+            entityManager.persist(doctorEntity);
 
             Client client = Stormpath.createStormPathClient();
             Account account = client.instantiate(Account.class);
-           
+
             account.setEmail(doctor.getUsername());
             account.setGivenName(doctor.getName());
             account.setPassword(doctor.getPassword());
             account.setUsername(doctor.getUsername());
             account.setSurname(doctor.getName());
-             if (!doctor.getUsername().contains("@")) {
+            if (!doctor.getUsername().contains("@")) {
                 throw new Exception("El username no es un correo electronico valido");
             }
             Stormpath.getStormPathApp().createAccount(account);
-            
+
             tran.commit();
-            
+
             entityManager.refresh(doctorEntity);
             respuesta.put("doctor_id", doctorEntity.getId());
 
@@ -234,5 +258,5 @@ public class UserService {
         }
         return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(respuesta).build();
     }
-    
+
 }

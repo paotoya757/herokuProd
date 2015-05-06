@@ -14,9 +14,11 @@ import ServerSide.Models.DTOs.EpisodioDolorDTO;
 
 import ServerSide.Models.DTOs.DoctorDTO;
 import ServerSide.Models.Entities.Doctor;
+import ServerSide.Utils.DataSecurity;
 import com.google.gson.Gson;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.client.Client;
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +34,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -51,7 +54,6 @@ public class DoctorServices {
      */
     @PersistenceContext(unitName = "myPU")
     EntityManager entityManager;
-
     //--------------------------------------------------------------------------
     // INIT
     //--------------------------------------------------------------------------
@@ -71,7 +73,6 @@ public class DoctorServices {
     //--------------------------------------------------------------------------
     // POST
     //--------------------------------------------------------------------------
-
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -83,9 +84,18 @@ public class DoctorServices {
      */
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") Long id) throws IOException {
         Doctor doctor = entityManager.find(Doctor.class, id);
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(DoctorConverter.entityToDto(doctor)).build();
+        DoctorDTO dto = DoctorConverter.entityToDto(doctor);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dto);
+        String data_hash = DataSecurity.hashCryptoCode(json);
+        return Response.status(200)
+                .header("data_hash", data_hash)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(dto)
+                .build();
     }
 
     /**
@@ -94,10 +104,19 @@ public class DoctorServices {
      * @return todos los doctores registrados
      */
     @GET
-    public Response findAll() {
+    public Response findAll() throws IOException {
         Query q = entityManager.createQuery("select u from Doctor u ");
         List<Doctor> doctors = q.getResultList();
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(DoctorConverter.entityToDtoList(doctors)).build();
+        List<DoctorDTO> dtos = DoctorConverter.entityToDtoList(doctors);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dtos);
+        String data_hash = DataSecurity.hashCryptoCode(json);
+        return Response.status(200)
+                .header("data_hash", data_hash)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(dtos)
+                .build();
 
     }
 

@@ -6,7 +6,11 @@
          version="2.5">
 
     <!-- Filtros -->
- 
+    <servlet-class>com.sun.jersey.server.impl.container.servlet.ServletAdaptor</servlet-class>
+    <init-param>
+        <param-name>com.sun.jersey.config.property.packages</param-name>
+        <param-value>com.example.your.resources</param-value>
+    </init-param>
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

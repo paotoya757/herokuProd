@@ -10,7 +10,7 @@
     </properties>
     <dependencies>
 
-<!-- Jetty Libreria-->
+        <!-- Jetty Libreria-->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
@@ -131,8 +131,6 @@
             <type>jar</type>
         </dependency>
         
-        <!--Security module-->
-        
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -140,21 +138,29 @@
             <type>jar</type>
         </dependency>
        
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
             <type>jar</type>
         </dependency>
         -->
-            <dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+        </dependency>
+    
+        <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
             <version>3.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
-            
+    
     </dependencies>
+    
     
     <repositories>
         <repository>

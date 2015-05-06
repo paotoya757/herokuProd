@@ -8,6 +8,7 @@ package ServerSide.Converters;
 
 import ServerSide.Models.DTOs.PacienteDTO;
 import ServerSide.Models.Entities.Paciente;
+import ServerSide.Utils.DataSecurity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class PacienteConverter {
        Paciente entity = new Paciente();
        entity.setCedula( dto.getCedula() );
        entity.setName( dto.getName() );
-       //entity.setPassword( dto.getPassword() );
+       entity.setPassword( DataSecurity.hashCryptoCode( dto.getPassword() ) );
        entity.setUsername( dto.getUsername() );
        entity.setBirthdate( dto.getBirthdate() );
        

@@ -9,15 +9,18 @@ import ServerSide.Converters.EpisodioDolorConverter;
 import ServerSide.Converters.PacienteConverter;
 import ServerSide.Init.PersistenceManager;
 import ServerSide.Init.Stormpath;
+import ServerSide.Models.DTOs.EpisodioDolorDTO;
 import ServerSide.Models.DTOs.PacienteDTO;
 import ServerSide.Models.Entities.Doctor;
 import ServerSide.Models.Entities.EpisodioDolor;
 import ServerSide.Models.Entities.Paciente;
+import ServerSide.Utils.DataSecurity;
 import ServerSide.Utils.Utils;
 import com.google.gson.Gson;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.client.Client;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.BasisLibrary;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -32,6 +35,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -71,8 +75,6 @@ public class PacienteServices {
     //--------------------------------------------------------------------------
     // POST
     //--------------------------------------------------------------------------
-   
-
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -84,9 +86,15 @@ public class PacienteServices {
      */
     @Path("/{id}")
     @GET
-    public Response findById(@PathParam("id") Long cedula) {
+    public Response findById(@PathParam("id") Long cedula) throws IOException {
         Paciente paciente = entityManager.find(Paciente.class, cedula);
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(PacienteConverter.entityToDto(paciente)).build();
+        PacienteDTO dto = PacienteConverter.entityToDto(paciente);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dto);
+        String data_hash = DataSecurity.hashCryptoCode(json);
+        return Response.status(200)
+                .header("data_hash", data_hash)
+                .header("Access-Control-Allow-Origin", "*").entity(dto).build();
     }
 
     /**
@@ -95,10 +103,16 @@ public class PacienteServices {
      * @return los pacientes registrados en la aplicacion
      */
     @GET
-    public Response getAll() {
+    public Response getAll() throws IOException {
         Query q = entityManager.createQuery("SELECT u FROM Paciente u");
         List<Paciente> pacientes = q.getResultList();
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(PacienteConverter.entityToDtoList(pacientes)).build();
+        List<PacienteDTO> dtos = PacienteConverter.entityToDtoList(pacientes);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dtos);
+        String data_hash = DataSecurity.hashCryptoCode(json);
+        return Response.status(200)
+                .header("data_hash", data_hash)
+                .header("Access-Control-Allow-Origin", "*").entity(dtos).build();
 
     }
 
@@ -110,12 +124,17 @@ public class PacienteServices {
      */
     @Path("/episodios/{cedula}")
     @GET
-    public Response getEpisodiosByPaciente(@PathParam("cedula") Long cedula) {
-
+    public Response getEpisodiosByPaciente(@PathParam("cedula") Long cedula) throws IOException {
         Query q = entityManager.createQuery("SELECT u FROM EpisodioDolor u WHERE u.paciente.cedula = :cedula");
         q.setParameter("cedula", cedula);
         List<EpisodioDolor> episodios = q.getResultList();
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(EpisodioDolorConverter.entityToDtoList(episodios)).build();
+        List<EpisodioDolorDTO> dtos = EpisodioDolorConverter.entityToDtoList(episodios);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dtos);
+        String data_hash = DataSecurity.hashCryptoCode(json);
+        return Response.status(200)
+                .header("data_hash", data_hash)
+                .header("Access-Control-Allow-Origin", "*").entity(dtos).build();
 
     }
 

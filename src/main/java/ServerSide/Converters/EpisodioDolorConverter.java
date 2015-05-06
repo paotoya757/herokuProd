@@ -10,35 +10,28 @@ import ServerSide.Models.DTOs.EpisodioDolorDTO;
 import ServerSide.Models.DTOs.MedicamentoDTO;
 import ServerSide.Models.DTOs.SintomaDTO;
 import ServerSide.Models.Entities.EpisodioDolor;
-import java.io.IOException;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class EpisodioDolorConverter {
 
-    public static EpisodioDolor dtoToEntity(EpisodioDolorDTO dto) throws JSONException, IOException {
-        EpisodioDolor entity = new EpisodioDolor();
-        entity.setFecha(dto.getFecha());
-        entity.setHoursSlept(dto.getHoursSlept());
-        entity.setLocalizacion(dto.getLocalizacion());
-        entity.setIntensidad(dto.getIntensidad());
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        entity.setCatalizadores(mapper.writeValueAsString(entity.getCatalizadores()));
-        entity.setMedicamentos(mapper.writeValueAsString(entity.getMedicamentos()));
-        entity.setSintomas(mapper.writeValueAsString(entity.getSintomas()));
-
-        return entity;
-    }
+//    public static EpisodioDolor dtoToEntity(EpisodioDolorDTO dto) throws JSONException, IOException {
+//        EpisodioDolor entity = new EpisodioDolor();
+//        entity.setFecha(dto.getFecha());
+//        entity.setHoursSlept(dto.getHoursSlept());
+//        entity.setLocalizacion(dto.getLocalizacion());
+//        entity.setIntensidad(dto.getIntensidad());
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        entity.setCatalizadores(mapper.writeValueAsString(entity.getCatalizadores()));
+//        entity.setMedicamentos(mapper.writeValueAsString(entity.getMedicamentos()));
+//        entity.setSintomas(mapper.writeValueAsString(entity.getSintomas()));
+//
+//        return entity;
+//    }
 
     public static EpisodioDolorDTO entityToDto(EpisodioDolor entity) {
         EpisodioDolorDTO dto = new EpisodioDolorDTO();
