@@ -10,10 +10,11 @@ import ServerSide.Models.DTOs.EpisodioDolorDTO;
 import ServerSide.Models.DTOs.MedicamentoDTO;
 import ServerSide.Models.DTOs.SintomaDTO;
 import ServerSide.Models.Entities.EpisodioDolor;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+
 
 public class EpisodioDolorConverter {
 

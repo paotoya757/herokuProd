@@ -7,36 +7,27 @@ package ServerSide.Services;
 
 import ServerSide.Converters.DoctorConverter;
 import ServerSide.Init.PersistenceManager;
-import ServerSide.Init.Stormpath;
-
-import ServerSide.Models.DTOs.DoctorDTO;
-import ServerSide.Models.DTOs.EpisodioDolorDTO;
 
 import ServerSide.Models.DTOs.DoctorDTO;
 import ServerSide.Models.Entities.Doctor;
 import ServerSide.Utils.DataSecurity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.stormpath.sdk.account.Account;
-import com.stormpath.sdk.client.Client;
 import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+
+
 
 /**
  *

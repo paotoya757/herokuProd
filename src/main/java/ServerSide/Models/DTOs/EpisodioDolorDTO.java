@@ -6,16 +6,20 @@
 
 package ServerSide.Models.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author Personal
- */
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+
+//import com.fasterxml.jackson.annotation.JsonAutoDetect;
+//import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+//import java.util.Date;
+//import java.util.List;
+//
+///**
+// *
+// * @author Personal
+// */
+//@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class EpisodioDolorDTO {
     
     private Long id;

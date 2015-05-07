@@ -9,21 +9,19 @@ import ServerSide.Utils.Utils;
 import ServerSide.Init.PersistenceManager;
 import ServerSide.Init.Stormpath;
 import ServerSide.Models.DTOs.CatalizadorDTO;
-import ServerSide.Models.DTOs.EpisodioDolorDTO;
 import ServerSide.Models.DTOs.MedicamentoDTO;
 import ServerSide.Models.DTOs.SintomaDTO;
 import ServerSide.Models.Entities.Doctor;
 import ServerSide.Models.Entities.EpisodioDolor;
 import ServerSide.Models.Entities.Paciente;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.account.AccountList;
-import com.stormpath.sdk.account.Accounts;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.client.Client;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -36,8 +34,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import org.codehaus.jackson.map.ObjectMapper;
+
 import org.fluttercode.datafactory.impl.DataFactory;
 
 /**

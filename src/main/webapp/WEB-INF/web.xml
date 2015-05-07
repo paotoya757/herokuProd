@@ -5,12 +5,6 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <!-- Filtros -->
-    <servlet-class>com.sun.jersey.server.impl.container.servlet.ServletAdaptor</servlet-class>
-    <init-param>
-        <param-name>com.sun.jersey.config.property.packages</param-name>
-        <param-value>com.example.your.resources</param-value>
-    </init-param>
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -31,6 +25,7 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     
+    <!-- Filtros -->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>

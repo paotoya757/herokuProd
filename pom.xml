@@ -33,7 +33,7 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>2.13</version>
         </dependency>
-
+                
         <!-- Shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -83,18 +83,6 @@
             <type>jar</type>
         </dependency>
         
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1</version>
-        </dependency>
-        
         <!-- Database Drivers -->
         <dependency>
             <groupId>org.apache.derby</groupId>
@@ -108,20 +96,30 @@
             <version>9.1-901-1.jdbc4</version>
         </dependency>
         
-        <!--JSON mappers-->
+        <!--JSON Providers -->
+        
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.11</version>
-            <type>jar</type>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
             <version>1.1</version>
-            <type>jar</type>
         </dependency>
         
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>2.1.3</version>
+        </dependency>
         
         <!--Test data generator-->
         <dependency>
@@ -130,21 +128,15 @@
             <version>0.8</version>
             <type>jar</type>
         </dependency>
-        
+           
+<!--          
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.4.0</version>
-            <type>jar</type>
-        </dependency>
-       
-        <!--        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
             <type>jar</type>
-        </dependency>
-        -->
+        </dependency>-->
+        
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -152,17 +144,26 @@
             <type>jar</type>
         </dependency>
     
-        <dependency>
+        <!--Local repo dependencies-->
+        
+<!--        <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
             <version>3.0-SNAPSHOT</version>
             <type>jar</type>
+        </dependency>-->
+              
+        <dependency>
+            <groupId>PMC</groupId>
+            <artifactId>security</artifactId>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
-    
+
     </dependencies>
     
     
     <repositories>
+        <!--Local repo-->
         <repository>
             <id>project.local</id>
             <name>project</name>
