@@ -146,18 +146,18 @@
     
         <!--Local repo dependencies-->
         
-<!--        <dependency>
+        <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
             <version>3.0-SNAPSHOT</version>
             <type>jar</type>
-        </dependency>-->
+        </dependency>
               
-        <dependency>
+<!--        <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
             <version>3.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
     
