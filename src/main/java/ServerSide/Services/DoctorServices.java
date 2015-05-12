@@ -27,8 +27,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
-
 /**
  *
  * @author Personal
@@ -45,9 +43,11 @@ public class DoctorServices {
      */
     @PersistenceContext(unitName = "myPU")
     EntityManager entityManager;
+
     //--------------------------------------------------------------------------
     // INIT
     //--------------------------------------------------------------------------
+
     /**
      * Inicializa el entity manager
      */
@@ -76,17 +76,27 @@ public class DoctorServices {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) throws IOException {
-        Doctor doctor = entityManager.find(Doctor.class, id);
-        DoctorDTO dto = DoctorConverter.entityToDto(doctor);
-        
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(dto);
-        String data_hash = DataSecurity.hashCryptoCode(json);
-        return Response.status(200)
-                .header("data_hash", data_hash)
-                .header("Access-Control-Allow-Origin", "*")
-                .entity(dto)
-                .build();
+        try {
+            Doctor doctor = entityManager.find(Doctor.class, id);
+            DoctorDTO dto = DoctorConverter.entityToDto(doctor);
+
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(dto);
+            String data_hash = DataSecurity.hashCryptoCode(json);
+            return Response.status(200)
+                    .header("data_hash", data_hash)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .entity(dto)
+                    .build();
+        } catch (Exception e) {
+            DoctorDTO dto = new DoctorDTO();
+            dto.setName("Excepcion : "+e.getMessage());
+            return Response.status(500)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .entity(dto)
+                    .build();
+        }
+
     }
 
     /**

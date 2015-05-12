@@ -114,10 +114,11 @@ public class UserService {
             status = 200;
 
         } catch (ResourceException ex) {
+            Response.status(500).header("Access-Control-Allow-Origin", "*").entity(token).build();
             System.out.println(ex.getStatus() + " " + ex.getMessage());
         }
 
-        return Response.status(status).header("Access-Control-Allow-Origin", "*").entity(token).build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").entity(token).build();
     }
 
     /**

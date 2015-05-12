@@ -28,7 +28,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
 /**
  *
  * @author Personal
@@ -77,14 +76,22 @@ public class PacienteServices {
     @Path("/{id}")
     @GET
     public Response findById(@PathParam("id") Long cedula) throws IOException {
-        Paciente paciente = entityManager.find(Paciente.class, cedula);
-        PacienteDTO dto = PacienteConverter.entityToDto(paciente);
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(dto);
-        String data_hash = DataSecurity.hashCryptoCode(json);
-        return Response.status(200)
-                .header("data_hash", data_hash)
-                .header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        try {
+            Paciente paciente = entityManager.find(Paciente.class, cedula);
+            PacienteDTO dto = PacienteConverter.entityToDto(paciente);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(dto);
+            String data_hash = DataSecurity.hashCryptoCode(json);
+            return Response.status(200)
+                    .header("data_hash", data_hash)
+                    .header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        } catch (Exception e) {
+            PacienteDTO dto = new PacienteDTO();
+            dto.setName("Excepcion : " + e.getMessage());
+            return Response.status(500)
+                    .header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        }
+
     }
 
     /**
@@ -115,16 +122,23 @@ public class PacienteServices {
     @Path("/episodios/{cedula}")
     @GET
     public Response getEpisodiosByPaciente(@PathParam("cedula") Long cedula) throws IOException {
-        Query q = entityManager.createQuery("SELECT u FROM EpisodioDolor u WHERE u.paciente.cedula = :cedula");
-        q.setParameter("cedula", cedula);
-        List<EpisodioDolor> episodios = q.getResultList();
-        List<EpisodioDolorDTO> dtos = EpisodioDolorConverter.entityToDtoList(episodios);
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(dtos);
-        String data_hash = DataSecurity.hashCryptoCode(json);
-        return Response.status(200)
-                .header("data_hash", data_hash)
-                .header("Access-Control-Allow-Origin", "*").entity(dtos).build();
+        try {
+            Query q = entityManager.createQuery("SELECT u FROM EpisodioDolor u WHERE u.paciente.cedula = :cedula");
+            q.setParameter("cedula", cedula);
+            List<EpisodioDolor> episodios = q.getResultList();
+            List<EpisodioDolorDTO> dtos = EpisodioDolorConverter.entityToDtoList(episodios);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(dtos);
+            String data_hash = DataSecurity.hashCryptoCode(json);
+            return Response.status(200)
+                    .header("data_hash", data_hash)
+                    .header("Access-Control-Allow-Origin", "*").entity(dtos).build();
+        } catch (Exception e) {
+            EpisodioDolorDTO ep = new EpisodioDolorDTO();
+            ep.setLocalizacion("Excepcion : " + e.getMessage());
+            return Response.status(500)
+                    .header("Access-Control-Allow-Origin", "*").entity(ep).build();
+        }
 
     }
 

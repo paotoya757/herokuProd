@@ -17,6 +17,7 @@ import ServerSide.Utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -118,10 +119,10 @@ public class EpisodioServices {
                     return failure.entity(respuesta).build();
                 }
             } else {
-                respuesta.put("Error :", "No esta mandando el header param \"data_hash\" "); 
-                return failure.entity( respuesta ).build();
+                respuesta.put("Error :", "No esta mandando el header param \"data_hash\" ");
+                return failure.entity(respuesta).build();
             }
-            
+
             tran.begin();
             //#Glassfish
             //entityManager.joinTransaction();
@@ -167,12 +168,19 @@ public class EpisodioServices {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDetalles(@PathParam("id") Long id) throws IOException {
-        EpisodioDolor episodio = entityManager.find(EpisodioDolor.class, id);
-        EpisodioDolorDTO dto = EpisodioDolorConverter.entityDetailToDto(episodio);
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(dto);
-        String data_hash = DataSecurity.hashCryptoCode(json);
-        return Response.status(200).header("data_hash", data_hash).header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        try {
+            EpisodioDolor episodio = entityManager.find(EpisodioDolor.class, id);
+            EpisodioDolorDTO dto = EpisodioDolorConverter.entityDetailToDto(episodio);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(dto);
+            String data_hash = DataSecurity.hashCryptoCode(json);
+            return Response.status(200).header("data_hash", data_hash).header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        } catch (Exception e) {
+            EpisodioDolorDTO dto = new EpisodioDolorDTO();
+            dto.setLocalizacion("Excepciooonnn: " + e.getMessage());
+            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(dto).build();
+        }
+
     }
 
     /**
@@ -191,24 +199,34 @@ public class EpisodioServices {
     @Path("/{id}/{fecha1}/{fecha2}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBetweenFechas(@PathParam("id") Long cedula, @PathParam("fecha1") Long fecha1, @PathParam("fecha2") Long fecha2) throws IOException {
-        Date f1 = new Date(fecha1);
-        Date f2 = new Date(fecha2);
-        Query q = entityManager.createQuery("SELECT e FROM EpisodioDolor e WHERE e.paciente.cedula=:ced AND :date1 <= e.fecha AND e.fecha <= :date2");
-        q.setParameter("date1", f1);
-        q.setParameter("date2", f2);
-        q.setParameter("ced", cedula);
-        List<EpisodioDolor> eps = q.getResultList();
+        try {
+            Date f1 = new Date(fecha1);
+            Date f2 = new Date(fecha2);
+            Query q = entityManager.createQuery("SELECT e FROM EpisodioDolor e WHERE e.paciente.cedula=:ced AND :date1 <= e.fecha AND e.fecha <= :date2");
+            q.setParameter("date1", f1);
+            q.setParameter("date2", f2);
+            q.setParameter("ced", cedula);
+            List<EpisodioDolor> eps = q.getResultList();
 
-        List<EpisodioDolorDTO> dtos = EpisodioDolorConverter.entityToDtoList(eps);
+            List<EpisodioDolorDTO> dtos = EpisodioDolorConverter.entityToDtoList(eps);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(dtos);
-        String data_hash = DataSecurity.hashCryptoCode(json);
-        return Response.status(200)
-                .header("data_hash", data_hash)
-                .header("Access-Control-Allow-Origin", "*")
-                .entity(dtos)
-                .build();
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(dtos);
+            String data_hash = DataSecurity.hashCryptoCode(json);
+            return Response.status(200)
+                    .header("data_hash", data_hash)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .entity(dtos)
+                    .build();
+        } catch (Exception e) {
+            EpisodioDolorDTO empty = new EpisodioDolorDTO();
+            empty.setLocalizacion("Exepcion: " + e.getMessage());
+            return Response.status(500)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .entity(empty)
+                    .build();
+        }
+
     }
 
     //--------------------------------------------------------------------------
