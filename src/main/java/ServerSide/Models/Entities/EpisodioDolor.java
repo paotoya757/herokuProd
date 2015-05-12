@@ -31,7 +31,7 @@ public class EpisodioDolor implements Serializable {
     // Attributes
     //-------------------------------------------------------------------------
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     @Temporal(TemporalType.DATE)
@@ -58,7 +58,7 @@ public class EpisodioDolor implements Serializable {
     // Constructor
     //-------------------------------------------------------------------------
     public EpisodioDolor(){
-        this.id = UUID.randomUUID().getLeastSignificantBits();
+        
     }
     
     //-------------------------------------------------------------------------
