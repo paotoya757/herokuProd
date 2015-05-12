@@ -24,7 +24,7 @@ public class EpisodioDolorDTO {
     
     private Long id;
     
-    private Date fecha;
+    private Long fecha;
     
     private String localizacion;
     
@@ -69,11 +69,11 @@ public class EpisodioDolorDTO {
         this.cedulaPaciente = cedulaPaciente;
     }
     
-    public Date getFecha() {
+    public Long getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Long fecha) {
         this.fecha = fecha;
     }
 

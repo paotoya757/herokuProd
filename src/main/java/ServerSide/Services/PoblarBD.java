@@ -181,7 +181,7 @@ public class PoblarBD {
 
             //entityManager.getTransaction().begin();
             EpisodioDolor e = new EpisodioDolor();
-            e.setFecha(df.getDateBetween(df.getDate(2014, 11, 1), df.getDate(2015, 9, 1)));
+            e.setFecha(df.getDateBetween(df.getDate(2014, 11, 1), df.getDate(2015, 9, 1)).getTime());
             e.setHoursSlept(df.getNumberBetween(3, 10));
             e.setIntensidad(df.getNumberBetween(0, 10));
             e.setLocalizacion(df.getItem(localizaciones, 100));

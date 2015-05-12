@@ -84,8 +84,9 @@ public class EpisodioDolor implements Serializable {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFecha(Long fecha) {
+        Date f = new Date(fecha);
+        this.fecha = f;
     }
 
     public Integer getIntensidad() {

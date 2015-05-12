@@ -36,7 +36,7 @@ public class EpisodioDolorConverter {
 
     public static EpisodioDolorDTO entityToDto(EpisodioDolor entity) {
         EpisodioDolorDTO dto = new EpisodioDolorDTO();
-        dto.setFecha(entity.getFecha());
+        dto.setFecha(entity.getFecha().getTime());
         dto.setCedulaPaciente(entity.getPaciente().getCedula());
         dto.setHoursSlept(entity.getHoursSlept());
         dto.setId(entity.getId());
