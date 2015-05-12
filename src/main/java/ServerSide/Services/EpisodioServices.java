@@ -89,6 +89,7 @@ public class EpisodioServices {
 
         JSONObject respuesta = new JSONObject();
         EpisodioDolor episodioEntity = new EpisodioDolor();
+        if( episodio == null ) { System.err.println("JSON NO LLEGA"); } else { episodio.toString(); }
         episodioEntity.setFecha( episodio.getFecha() );
         episodioEntity.setHoursSlept(episodio.getHoursSlept());
         episodioEntity.setIntensidad(episodio.getIntensidad());

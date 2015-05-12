@@ -125,6 +125,12 @@ public class EpisodioDolorDTO {
     public void setMedicamentos(List<MedicamentoDTO> medicamentos) {
         this.medicamentos = medicamentos;
     }
+
+    @Override
+    public String toString() {
+        return "EpisodioDolorDTO{" + "id=" + id + ", fecha=" + fecha + ", localizacion=" + localizacion + ", cedulaPaciente=" + cedulaPaciente + '}';
+    }
+    
     
     
 }
