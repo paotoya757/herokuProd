@@ -117,7 +117,7 @@ public class UserService {
             System.out.println(ex.getStatus() + " " + ex.getMessage());
         }
 
-        return Response.status(status).entity(token).build();
+        return Response.status(status).header("Access-Control-Allow-Origin", "*").entity(token).build();
     }
 
     /**
