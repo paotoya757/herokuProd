@@ -45,7 +45,7 @@
     </filter>
     <filter-mapping>
         <filter-name>cross-origin</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/webresources/*</url-pattern>
     </filter-mapping>
     
     <listener>

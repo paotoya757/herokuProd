@@ -22,6 +22,12 @@
             <version>7.6.0.v20120127</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>7.6.0.v20120127</version>
+        </dependency>
+
         <!-- Jersey -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -129,7 +135,7 @@
             <type>jar</type>
         </dependency>
            
-<!--          
+        <!--          
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -153,7 +159,7 @@
             <type>jar</type>
         </dependency>
               
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
             <version>3.0.1-SNAPSHOT</version>
