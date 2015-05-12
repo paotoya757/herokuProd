@@ -89,7 +89,7 @@ public class EpisodioServices {
 
         JSONObject respuesta = new JSONObject();
         EpisodioDolor episodioEntity = new EpisodioDolor();
-        episodioEntity.setFecha(episodio.getFecha());
+        episodioEntity.setFecha( episodio.getFecha() );
         episodioEntity.setHoursSlept(episodio.getHoursSlept());
         episodioEntity.setIntensidad(episodio.getIntensidad());
         episodioEntity.setLocalizacion(episodio.getLocalizacion());
