@@ -118,7 +118,7 @@ public class UserService {
             System.out.println(ex.getStatus() + " " + ex.getMessage());
         }
 
-        return Response.ok().header("Access-Control-Allow-Origin", "*").entity(token).build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept").entity(token).build();
     }
 
     /**
