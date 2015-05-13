@@ -152,15 +152,10 @@
     
         <!--Local repo dependencies-->
               
-        <!--        <dependency>
-            <groupId>PMC</groupId>
-            <artifactId>security</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
-        </dependency>-->
         <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
-            <version>3.0.1-Local</version>
+            <version>3.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     
