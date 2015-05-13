@@ -85,6 +85,54 @@ public class UserService {
     //--------------------------------------------------------------------------
     // Metodos
     //--------------------------------------------------------------------------
+     
+    /**
+     * Login compatible con android que devuleve el token en texto plano.
+     * @param user
+     * @return el token en texto plano 
+     */
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/signIn")
+    @POST
+    public String login_token_plain_text(UserDTO user){
+        int status = 500; //Codigo de error en el servidor
+        String token = "User and/or password wrong";
+        UserDTO userStorm = new UserDTO();
+        String path = "src\\main\\webapp\\WEB-INF\\apiKey.properties";//Colocar la Ubicacion de su archivo apiKey.properties
+        Properties props = new ApiKeyEnvVariables();
+        ApiKey apiKey = ApiKeys.builder().setProperties(props).build();
+        Client client = Clients.builder().setApiKey(apiKey).build();
+
+        try {
+            AuthenticationRequest request = new UsernamePasswordRequest(user.getUsername(), user.getPassword());
+            Tenant tenant = client.getCurrentTenant();
+            ApplicationList applications = tenant.getApplications(Applications.where(Applications.name().eqIgnoreCase("MigraineTracking")));
+            com.stormpath.sdk.application.Application application = applications.iterator().next();
+
+            AuthenticationResult result = application.authenticateAccount(request);
+            Account account = result.getAccount();
+            userStorm.setEmail(account.getEmail());
+            userStorm.setName(account.getFullName());
+            userStorm.setUsername(account.getUsername());
+            userStorm.setPassword(user.getPassword());
+            userStorm.setLevelAccess(user.getLevelAccess());
+            token = new Gson().toJson(JsonWebToken.encode(userStorm, "Un14nd3s2014@", JwtHashAlgorithm.HS256));
+            status = 200;
+
+        } catch (ResourceException ex) {
+          
+            System.out.println(ex.getStatus() + " " + ex.getMessage());
+        }
+
+        return token;
+    }
+    
+    
+    /**
+     * Login compatible con angular que devuelve el token en json
+     * @param user
+     * @return token como json
+     */
     @Path("/login")
     @POST
     public Response login(UserDTO user) {
@@ -121,6 +169,7 @@ public class UserService {
         return Response.ok().header("Access-Control-Allow-Origin", "*").entity(token).build();
     }
 
+    
     /**
      * Registra un nuevo paciente en el sistema y en STORMPATH
      *

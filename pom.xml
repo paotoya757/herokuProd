@@ -160,7 +160,7 @@
         <dependency>
             <groupId>PMC</groupId>
             <artifactId>security</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>3.0.1-Local</version>
         </dependency>
     </dependencies>
     
